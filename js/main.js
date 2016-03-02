@@ -44,7 +44,23 @@ var ViewModel = function() {
   locations.forEach(function(location) {
     self.locationList.push(new Location(location));
   });
-//console.log(this.locationList()[1].name());
+
+  //if locationsLits not contain queryValue, exclude
+  this.queryValue = ko.observable("");
+
+  this.search = function(value) {
+    self.locationList.removeAll();
+
+    //self.locationList.removeAll();
+    locations.forEach(function(location) {
+      if (location.name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        self.locationList.push(new Location(location));
+      }
+    });
+  }
+
+  this.queryValue.subscribe(this.search);
+
 }
 
 var mapVM = new ViewModel();

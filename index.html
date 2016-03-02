@@ -11,15 +11,21 @@
   <body>
     <div id="map"></div>
     <form id="searchForm">
-      <input type="text" class="search" placeholder="Search...">
-      <input type="button" class="button" value="Search">
+      <input type="search" class="search" placeholder="Search..." data-bind="value: queryValue, valueUpdate: 'keyup'">
     </form>
+
+    <div id="locationList">
+      <ul data-bind="foreach: locationList">
+        <li>
+          <strong data-bind="text: name"></strong>
+        </li>
+      </ul>
+    </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcaBHvN8Sga4DsQd0L0ynB-jxO7Fi1l8A&callback=initMap" async defer></script>
     <script src="js/jquery/jquery.js"></script>
     <script src="js/knockout/knockout.js"></script>
     <script src="js/main.js"></script>
-
 
   </body>
 

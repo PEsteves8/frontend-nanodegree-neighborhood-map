@@ -3,6 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
 #map {
   height: 100%;
 }
@@ -11,21 +12,36 @@ html, body {
   top: 6%;
   right: 2%;
 }
-.search, .button {
-  position: relative;
-  padding: 6px 15px;
-  border: 2px solid #207cca;
-}
 .search {
+  height: 25px;
+  width: 275px;
+  border: 2px solid #207cca;
   background: rgba(255, 255, 255, 1);
 }
-.button {
-  right: 2px;
-  margin-left: -4px;
-  background-color: #207cca;
-  color: #fafafa;
+
+#locationList {
+  position: absolute;
+  right: 2%;
+  top:10%;
+  width: 320px;
+  font-family: Georgia, Times, serif;
+  font-size: 15px;
 }
-.button:hover {
-  background-color: #5b99cf;
-  border: 2px solid #5b99cf;
+
+#locationList ul li {
+  display: block;
+  text-decoration: none;
+  color: #000000;
+  background-color: #FFFFFF;
+  line-height: 30px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #CCCCCC;
+  padding-left: 10px;
+  cursor: pointer;
+}
+#locationList ul li:hover {
+  color: #FFFFFF;
+  background-repeat: repeat-x;
+  background-color: #123455
 }
