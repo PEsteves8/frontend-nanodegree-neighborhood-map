@@ -1,0 +1,31 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#map {
+  height: 100%;
+}
+#searchForm {
+  position: absolute;
+  top: 6%;
+  right: 2%;
+}
+.search, .button {
+  position: relative;
+  padding: 6px 15px;
+  border: 2px solid #207cca;
+}
+.search {
+  background: rgba(255, 255, 255, 1);
+}
+.button {
+  right: 2px;
+  margin-left: -4px;
+  background-color: #207cca;
+  color: #fafafa;
+}
+.button:hover {
+  background-color: #5b99cf;
+  border: 2px solid #5b99cf;
+}
