@@ -34,60 +34,82 @@ var Location = function(data) {
   this.name = ko.observable(data.name);
   this.lat = ko.observable(data.lat);
   this.lng = ko.observable(data.lng);
+
 };
 
-var ViewModel = function() {
+var ViewModel = function(map) {
   var self = this;
+  var markers = [];
+  self.googleMap = map;
 
   this.locationList = ko.observableArray([]);
 
-  locations.forEach(function(location) {
-    self.locationList.push(new Location(location));
+  locations.forEach(function(loc) {
+    self.locationList.push(new Location(loc));
   });
 
-  //if locationsLits not contain queryValue, exclude
+
+  self.locationList().forEach(function(location) {
+    location.marker = new google.maps.Marker({
+      position: {
+        lat: location.lat(),
+        lng: location.lng()
+      },
+      map: self.googleMap,
+      title: location.name()
+    });
+  })
+
+
+  this.removeMarkers = function() {
+    self.locationList().forEach(function(location) {
+      location.marker.setMap(null);
+    })
+  }
+
+
+
+  console.log(self.locationList()[0].marker);
+
   this.queryValue = ko.observable("");
 
   this.search = function(value) {
-    self.locationList.removeAll();
 
-    //self.locationList.removeAll();
-    locations.forEach(function(location) {
-      if (location.name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-        self.locationList.push(new Location(location));
+    for (var i = 0; i < locations.length; i++) {
+      if (locations[i].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        if (self.locationList()[i].marker.map === null) {
+          self.locationList()[i].marker.setMap(self.googleMap);
+          self.locationList()[i].name(locations[i].name);
+        }
+
+      } else {
+        self.locationList()[i].marker.setMap(null);
+        self.locationList()[i].name(null);
       }
-    });
+    }
+
   }
+
 
   this.queryValue.subscribe(this.search);
 
 }
 
-var mapVM = new ViewModel();
-ko.applyBindings(mapVM);
-
 
 //Google Map centered around Porto's downtown (Portugal)
-function initMap() {
-  var baixa = new google.maps.LatLng(41.147273, -8.614370);
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: baixa,
+function initMap() {
+  return new google.maps.Map(document.getElementById('map'), {
+    center: new google.maps.LatLng(41.147273, -8.614370),
     zoom: 17,
     scrollwheel: true
-  });
+  })
 
-  for (var i = 0; i < mapVM.locationList().length; i++) {
-    console.log(mapVM.locationList()[i].name());
-
-    var marker = new google.maps.Marker({
-      map: map,
-      position: {
-        lat: mapVM.locationList()[i].lat(),
-        lng: mapVM.locationList()[i].lng()
-      },
-      title: mapVM.locationList()[i].name()
-    });
-
-  }
 };
+
+$(window).load(function() {
+
+  var googleMap = initMap();
+  ko.applyBindings(new ViewModel(googleMap));
+
+});
