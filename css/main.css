@@ -45,3 +45,7 @@ html, body {
   background-repeat: repeat-x;
   background-color: #123455
 }
+
+.infoOpenHL {
+  background-color: lightgreen !important;
+}
