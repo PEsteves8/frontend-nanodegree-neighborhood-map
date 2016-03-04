@@ -1,4 +1,4 @@
-// TODO: Correct insisible part of list || Make list smaller with smaller screens || Add checkboxes ||
+// TODO: Correct invisible part of list || Allow list to be minimized || Add checkboxes ||
 
 //List of locations
 var locations = [{
@@ -51,6 +51,7 @@ var ViewModel = function(map) {
   locations.forEach(function(loc) {
     self.locationList.push(new Location(loc));
   });
+  self.locationList.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 });
 
   //Add a marker property to each location in locationList
   self.locationList().forEach(function(location) {
