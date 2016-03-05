@@ -1,4 +1,4 @@
-// TODO: Add checkboxes
+// TODO: Add checkboxes || Add title/instructions
 
 //List of locations
 var locations = [{
@@ -78,7 +78,7 @@ var ViewModel = function(map) {
 
     //this.queryValue.subscribe(this.search);
     var infoWindow = new google.maps.InfoWindow({
-      content: "<h1>" + location.infoContent() + "</h1>",
+      content: location.infoContent(),
     });
 
     location.infoContent.subscribe(function() {
@@ -87,15 +87,15 @@ var ViewModel = function(map) {
     // Get the infoWindow html ready depending on wether the data from foursquare exists
     var getWindowHTML = function(icon, name, photo, hours, schedule, rating, url, phone, street, city, country) {
 
-      var iconHTML = icon ? "<img style='float:left; padding-top: 15px;padding-right:10px;' src='" + icon + "'></img>" : "";
-      var nameHTML = name ? "<h1>" + "   " + name + "</h1>" : "";
-      var photoHTML = photo ? "<br><img src='" + photo + "'>" : "";
-      var ratingHTML = rating ? "<h3>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h3>" : "<h3>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h3>";
-      var hoursHTML = "<h4>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h4>";
-      var addressHTML = "<h4>" + (street ? street + "<br>" : "") + (city ? city + "<br>" : "") + (country ? country : "") + "</h4>";
-      var phoneHTML = phone ? "</h4>" + phone + "</h4>" : "";
+      var iconHTML = icon ? "<img width='25' class='iconHTML' src='" + icon + "'></img>" : "";
+      var nameHTML = name ? "<h2 class='nameHTML'>" + name + "</h2>" : "";
+      var photoHTML = photo ? "<img class='photoHTML' src='" + photo + "'>" : "";
+      var ratingHTML = rating ? "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h4>" : "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h4>";
+      var hoursHTML = "<h5>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h5>";
+      var addressPhoneHTML = "<h5>" + (street ? street + "<br>" : "") + (city ? city + ", ": "") + (country ? country +"<br>" : "") + (phone ? phone : "") + "</h5>";
 
-      return iconHTML + nameHTML + photoHTML + ratingHTML + hoursHTML + addressHTML + phoneHTML;
+
+      return "<div>" + iconHTML + nameHTML + photoHTML + ratingHTML +  addressPhoneHTML + hoursHTML + "</div>";
     };
 
     location.toggleWindowOnClick = function() {
