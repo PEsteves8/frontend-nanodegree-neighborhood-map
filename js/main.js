@@ -1,4 +1,4 @@
-// TODO: Correct invisible part of list || Allow list to be minimized || Add checkboxes ||
+// TODO: Add checkboxes
 
 //List of locations
 var locations = [{
@@ -31,13 +31,6 @@ var locations = [{
   lng: -8.612727
 }, ];
 
-var cityCountry = {
-  city: "Porto",
-  country: "Portugal"
-}
-
-
-
 // Constructor to build each location's object
 var Location = function(data) {
   this.name = ko.observable(data.name);
@@ -45,13 +38,21 @@ var Location = function(data) {
   this.lng = ko.observable(data.lng);
   this.isVisible = ko.observable(true);
   this.infoOpen = ko.observable(false);
-  this.infoContent = ko.observable("");
+  this.infoContent = ko.observable("<img src='images/loading_icon.gif'></img>");
 };
 
 var ViewModel = function(map) {
   var self = this;
 
   self.googleMap = map;
+
+  //Add funcionality to toogle the list's visibility
+  this.listIsHidden = ko.observable(false);
+  this.toggleListVisible = function() {
+    $(".togglable").animate(
+      {height: "toggle"}, 200);
+    self.listIsHidden(!self.listIsHidden());
+  }
 
   //Create a list of locations from the locations array
   this.locationList = ko.observableArray([]);
@@ -86,11 +87,11 @@ var ViewModel = function(map) {
     // Get the infoWindow html ready depending on wether the data from foursquare exists
     var getWindowHTML = function(icon, name, photo, hours, schedule, rating, url, phone, street, city, country) {
 
-      var iconHTML = icon ? "<img src='" + icon + "'></img>" : "";
-      var nameHTML = name ? "<h1 style='display: inline;'>" + "   " + name + "</h1>" : "";
+      var iconHTML = icon ? "<img style='float:left; padding-top: 15px;padding-right:10px;' src='" + icon + "'></img>" : "";
+      var nameHTML = name ? "<h1>" + "   " + name + "</h1>" : "";
       var photoHTML = photo ? "<br><img src='" + photo + "'>" : "";
       var ratingHTML = rating ? "<h3>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h3>" : "<h3>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h3>";
-      var hoursHTML = "<h4>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>": "") + "</h4>";
+      var hoursHTML = "<h4>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h4>";
       var addressHTML = "<h4>" + (street ? street + "<br>" : "") + (city ? city + "<br>" : "") + (country ? country : "") + "</h4>";
       var phoneHTML = phone ? "</h4>" + phone + "</h4>" : "";
 
@@ -110,9 +111,9 @@ var ViewModel = function(map) {
           self.googleMap.panTo(location.marker.getPosition());
           location.infoOpen(true);
 
-          //Request info from foursquare for the clicked location only if data doesn't exist yet
+          //Request info from foursquare for the clicked location only if data doesn't exist yet (loading icon playing)
           //A nested ajax request was necessary as the first returns the basic venue info including its ID and the second returns its details using the ID
-          if (location.infoContent() === "") {
+          if (location.infoContent() === "<img src='images/loading_icon.gif'></img>") {
             $.ajax({
               url: "https://api.foursquare.com/v2/venues/search?client_id=CHNBXXBO4XIC24AAH3JY3ZI4A1G0WBM24U3SEVDIKAFWKFDR&client_secret=FKC5XJA0JJVKFCQNEDABMH1GWSVPOES2GE0PVEVIQK4XK43X&v=20130815&limit=1&ll=" + location.lat() + "," + location.lng() + "&query=" + location.name(),
               cache: true,

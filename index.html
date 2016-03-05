@@ -11,12 +11,11 @@
 
 <body>
   <div id="map"></div>
-  <form id="searchForm">
-    <input type="search" class="search" placeholder="Search..." data-bind="value: queryValue, valueUpdate: 'keyup'">
-  </form>
 
   <div id="locationList">
-    <ul data-bind="foreach: locationList">
+    <button class="hideButton" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'"></button>
+    <input type="search" class="search" placeholder="Search..." data-bind="textInput: queryValue">
+    <ul class="togglable" data-bind="foreach: locationList">
       <!-- ko if: isVisible -->
       <li data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
         <strong data-bind="text: name"></strong>

@@ -7,29 +7,75 @@ html, body {
 #map {
   height: 100%;
 }
-#searchForm {
-  position: absolute;
-  top: 6%;
-  right: 2%;
+
+.hideButton {
+  position: relative;
+  width: 88%;
+  left: 12%;
+  bottom: -2px;
+  -moz-box-shadow:inset 0px 1px 0px 0px #9acc85;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #9acc85;
+	box-shadow:inset 0px 1px 0px 0px #9acc85;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #74ad5a), color-stop(1, #68a54b));
+	background:-moz-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+	background:-webkit-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+	background:-o-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+	background:-ms-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+	background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#74ad5a', endColorstr='#68a54b',GradientType=0);
+	background-color:#74ad5a;
+	border:1px solid #3b6e22;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:9px 76px;
+	text-decoration:none;
 }
+.hideButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #68a54b), color-stop(1, #74ad5a));
+	background:-moz-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+	background:-webkit-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+	background:-o-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+	background:-ms-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+	background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#68a54b', endColorstr='#74ad5a',GradientType=0);
+	background-color:#68a54b;
+}
+
+.hideButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+
 .search {
-  height: 25px;
-  width: 275px;
-  border: 2px solid #207cca;
+  position: relative;
+  height: 30px;
+  width: 88%;
+  left: 12%;
+  bottom: -8px;
   background: rgba(255, 255, 255, 1);
 }
 
 #locationList {
   position: absolute;
   right: 2%;
-  top:10%;
+  top:0%;
   width: 320px;
   font-family: Georgia, Times, serif;
   font-size: 15px;
+  padding-top: 20px;
 }
 
 #locationList ul li {
   display: block;
+  font-family: sans-serif;
+  list-style-type: none;
+  list-style-position: inside;
   text-decoration: none;
   color: #000000;
   background-color: #FFFFFF;
