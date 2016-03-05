@@ -12,7 +12,7 @@ html, body {
   position: relative;
   width: 84%;
   left: 16%;
-  bottom: -2px;
+  margin-bottom: 5px;
   -moz-box-shadow:inset 0px 1px 0px 0px #9acc85;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #9acc85;
 	box-shadow:inset 0px 1px 0px 0px #9acc85;
@@ -50,29 +50,27 @@ html, body {
 	top:1px;
 }
 
-
-
 .search {
   position: relative;
-  height: 30px;
+  height: 25px;
   width: 84%;
   left: 16%;
-  bottom: -8px;
   background: rgba(255, 255, 255, 1);
+
 }
 
-#locationList {
+#listMenu {
   position: absolute;
-  right: 10%;
-  top:0%;
-  width: 240px;
+  right: 10px;
+  top:-10px;
+  width: 220px;
   font-family: Georgia, Times, serif;
   font-size: 15px;
   padding-top: 20px;
   overflow: hidden;
 }
 
-#locationList ul li {
+#listMenu ul li {
   display: block;
   font-family: sans-serif;
   list-style-type: none;
@@ -87,10 +85,17 @@ html, body {
   padding-left: 10px;
   cursor: pointer;
 }
-#locationList ul li:hover {
+#listMenu ul li:hover {
   color: #FFFFFF;
   background-repeat: repeat-x;
   background-color: #123455
+}
+
+.list {
+  position: relative;
+  top: -10px;
+  padding-left: 35px;
+
 }
 
 .infoOpenHL {
@@ -100,12 +105,52 @@ html, body {
 .iconHTML {
   float: right;
   display: inline-block;
+  margin-right: 20px;
+  height: 25px;
 }
 
 .photoHTML {
-  height: 80px;
+  position: relative;
+  margin: auto;
+  padding-right: 10px;
+  height: 75px;
+  width: 100px;
+}
+
+.ratingHTML {
+  margin: 5px;
+  margin-left: 2px;
+  margin-top: 8px;
 }
 
 .nameHTML {
   padding-right: 0px;
+  margin: 2px;
+}
+
+.hoursHTML {
+  margin: 2px;
+}
+
+.addressHTML {
+  margin: 0;
+}
+
+.keyLocations {
+position: relative;
+top: 5px;
+margin-top: 0px;
+text-align: center;
+margin-left: 35px;
+font-family: sans-serif;
+color: white;
+background-color: #1a484b;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+
+@media screen and (max-width: 750px) {
+  .collapsableList {
+    display: none;
+  }
 }

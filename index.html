@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Neighborhood Map</title>
+  <title>Porto's Nightlife</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/main.css">
@@ -12,16 +12,19 @@
 <body>
   <div id="map"></div>
 
-  <div id="locationList">
-    <button class="hideButton" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'"></button>
-    <input type="search" class="search" placeholder="Search..." data-bind="textInput: queryValue">
-    <ul class="togglable" data-bind="foreach: locationList">
+  <div id="listMenu">
+    <button class="hideButton" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'">Loading...</button>
+    <input type="search" class="search" placeholder="Filter by name..." data-bind="textInput: queryValue">
+<div class="collapsableList">
+    <h4 class="keyLocations">Key Venues</h4>
+    <ul class="list" data-bind="foreach: locationList">
       <!-- ko if: isVisible -->
       <li data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
         <strong data-bind="text: name"></strong>
       </li>
       <!-- /ko -->
     </ul>
+</div>
   </div>
 
 

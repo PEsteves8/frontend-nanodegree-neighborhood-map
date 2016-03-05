@@ -43,13 +43,20 @@ var Location = function(data) {
 
 var ViewModel = function(map) {
   var self = this;
-
   self.googleMap = map;
 
+// Make it so if screen is small, list starts collapsed. JS instead of CSS so that jquery's animate gets used.
+  if ( $(window).width() > 739) {
+    this.listIsHidden = ko.observable(false);
+  }
+  else {
+    this.listIsHidden = ko.observable(true);
+  
+  }
   //Add funcionality to toogle the list's visibility
-  this.listIsHidden = ko.observable(false);
-  this.toggleListVisible = function() {
-    $(".togglable").animate(
+
+    this.toggleListVisible = function() {
+    $(".collapsableList").animate(
       {height: "toggle"}, 200);
     self.listIsHidden(!self.listIsHidden());
   }
@@ -88,14 +95,14 @@ var ViewModel = function(map) {
     var getWindowHTML = function(icon, name, photo, hours, schedule, rating, url, phone, street, city, country) {
 
       var iconHTML = icon ? "<img width='25' class='iconHTML' src='" + icon + "'></img>" : "";
-      var nameHTML = name ? "<h2 class='nameHTML'>" + name + "</h2>" : "";
+      var nameHTML = name ? "<h3 class='nameHTML'>" + name + "</h3>" : "";
       var photoHTML = photo ? "<img class='photoHTML' src='" + photo + "'>" : "";
-      var ratingHTML = rating ? "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h4>" : "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h4>";
-      var hoursHTML = "<h5>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h5>";
-      var addressPhoneHTML = "<h5>" + (street ? street + "<br>" : "") + (city ? city + ", ": "") + (country ? country +"<br>" : "") + (phone ? phone : "") + "</h5>";
+      var ratingHTML = rating ? "<h5 class='ratingHTML'>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h4>" : "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h5>";
+      var hoursHTML = "<h5 class='hoursHTML'>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h5>";
+      var addressPhoneHTML = "<p class='addressHTML'>" + (street ? street + "<br>" : "") + (city ? city + ", ": "") + (country ? country +"<br>" : "") + (phone ? phone : "") + "</p>";
 
 
-      return "<div>" + iconHTML + nameHTML + photoHTML + ratingHTML +  addressPhoneHTML + hoursHTML + "</div>";
+      return "<div style='display: flex;'>" + photoHTML + "<div>" + iconHTML + nameHTML + ratingHTML + addressPhoneHTML + hoursHTML + "</div>" + "</div>";
     };
 
     location.toggleWindowOnClick = function() {
@@ -143,7 +150,7 @@ var ViewModel = function(map) {
                       venueName = venueData.response.venue.name;
                     }
                     if (venueData.response.venue.bestPhoto) {
-                      venuePhoto = venueData.response.venue.bestPhoto.prefix + "200x100" + venueData.response.venue.bestPhoto.suffix;
+                      venuePhoto = venueData.response.venue.bestPhoto.prefix + "300x200" + venueData.response.venue.bestPhoto.suffix;
                     }
                     if (venueData.response.venue.hours) {
                       venueHours = venueData.response.venue.hours.status;
