@@ -7,28 +7,52 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.css">
 </head>
 
 <body>
   <div id="map"></div>
-
-  <div id="listMenu">
+  <div class="icon info hasTooltip" title=""></div>
+  <div class="hidden infoTip"> <!-- This class should hide the element, change it if needed -->
+    <h2 class="center-text">Downtown Map</h2>
+    <ul class="info-list">
+    <li>This is a curated set of great places to visit in case you're going out around Porto.</li>
+    <li>You can filter the selection by name or category using the buttons</li>
+    <li>Clicking on a list item or on a marker opens an infowindow about that location</li>
+  </ul>
+  </div>
+  <div class="listMenu">
     <button class="hideButton" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'">Loading...</button>
     <input type="search" class="search" placeholder="Filter by name..." data-bind="textInput: queryValue">
-<div class="collapsableList">
-    <h4 class="keyLocations">Key Venues</h4>
-    <ul class="list" data-bind="foreach: locationList">
-      <!-- ko if: isVisible -->
-      <li data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
-        <strong data-bind="text: name"></strong>
+    <ul class="filterList">
+      <li>
+        <input class="filterInput" id="bars" type="checkbox" data-bind="checked: barShow" checked>
+        <label class="filterLabel" for="bars">Bars</label>
       </li>
-      <!-- /ko -->
+      <li>
+        <input class="filterInput" id="clubs" type="checkbox" data-bind="checked: clubShow" checked>
+        <label class="filterLabel" for="clubs">Clubs</label>
+      </li>
+      <li>
+        <input class="filterInput" id="restaurants" type="checkbox" data-bind="checked: restaurantShow" checked>
+        <label class="filterLabel" for="restaurants">Food</label>
+      </li>
     </ul>
-</div>
+    <div class="collapsableList">
+      <h4 class="keyLocationsTitle">Key Venues</h4>
+      <ul class="locationsList" data-bind="foreach: locationList">
+        <!-- ko if: isVisible -->
+        <li class="locationItem" data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
+          <strong data-bind="text: name"></strong>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </div>
   </div>
 
 
   <script src="js/jquery/jquery.js"></script>
+  <script src="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.js"></script>
   <script src="js/knockout/knockout.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcaBHvN8Sga4DsQd0L0ynB-jxO7Fi1l8A" async defer></script>
   <script src="js/main.js"></script>

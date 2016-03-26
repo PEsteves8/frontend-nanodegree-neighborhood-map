@@ -1,35 +1,78 @@
-// TODO: Add checkboxes || Add title/instructions
+// TODO: refactor css ||| add more places ||| add foursquare info
 
 //List of locations
 var locations = [{
   name: "Café Piolho",
   lat: 41.146882,
-  lng: -8.616246
+  lng: -8.616246,
+  type: ["Bar", "Restaurant"]
 }, {
   name: "Galerias de Paris",
   lat: 41.147219,
-  lng: -8.614290
+  lng: -8.614290,
+  type: ["Bar"]
 }, {
   name: "We Love Porto",
   lat: 41.147304,
-  lng: -8.614215
+  lng: -8.614215,
+  type: ["Club"]
 }, {
   name: "Plano B",
   lat: 41.146512,
-  lng: -8.613855
+  lng: -8.613855,
+  type: ["Club"]
 }, {
   name: "Tendinha dos Clérigos",
   lat: 41.147454,
-  lng: -8.613222
+  lng: -8.613222,
+  type: ["Club"]
 }, {
   name: "Espaço 77",
   lat: 41.149607,
-  lng: -8.615973
+  lng: -8.615973,
+  type: ["Bar", "Restaurant"]
 }, {
   name: "Radio Bar",
   lat: 41.148473,
-  lng: -8.612727
+  lng: -8.612727,
+  type: ["Bar", "Club"]
 }, ];
+
+$('.hasTooltip').each(function() { // Notice the .each() loop, discussed below
+    $(this).qtip({
+        content: {
+            text: $(this).next('div'), // Use the "div" element next to this for the content
+            title: "Info",
+            button: "Close"
+        },
+        style: { classes: 'qtip-tipsy',
+      width: "220" },
+        hide: {
+        event: false
+      },
+      show: {
+        event: 'click mouseenter',
+        ready: true,
+
+    },
+    hide: {
+        event: 'unfocus',
+        fixed: true,
+
+    },
+       position: {
+          my: 'top right',  // Position my top left...
+          at: 'bottom left',
+          viewport: $(window), // at the bottom right of...
+          target: $(this) // my target
+      }
+    });
+});
+
+
+
+
+
 
 // Constructor to build each location's object
 var Location = function(data) {
@@ -39,6 +82,7 @@ var Location = function(data) {
   this.isVisible = ko.observable(true);
   this.infoOpen = ko.observable(false);
   this.infoContent = "<img src='images/loading_icon.gif'></img>";
+  this.type = data.type;
 };
 
 var ViewModel = function(map) {
@@ -131,6 +175,7 @@ var ViewModel = function(map) {
                   cache: true,
                   dataType: 'json',
                   success: function(venueData) {
+
                     var venueIcon = "";
                     var venueName = "";
                     var venuePhoto = "";
@@ -206,13 +251,27 @@ var ViewModel = function(map) {
 
   //Value for the search bar
   this.queryValue = ko.observable("");
+  this.barShow = ko.observable(true);
+  this.clubShow = ko.observable(true);
+  this.restaurantShow = ko.observable(true);
 
   /*Function that runs each time a key is pressed in the search bar. It checks if the input
     is part of any of the locations name and filters everything else*/
-  this.search = function(value) {
+
+  this.filter = function() {
+    // Here the value parameter that gets passed into the function will adopt either the input value or true/false depending on the filter mode.
+    // Because of that, we don't end up using it, and fetch the actual values instead.
+
+    var filteredName = $(".search").val();
 
     for (var i = 0; i < self.locationList().length; i++) {
-      if (self.locationList()[i].name().toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+      var filterByTypeBar = self.locationList()[i].type.indexOf("Bar") >= 0 && self.barShow();
+      var filterByTypeClub = self.locationList()[i].type.indexOf("Club") >= 0 && self.clubShow();
+      var filterByTypeRestaurant = self.locationList()[i].type.indexOf("Restaurant") >= 0 && self.restaurantShow();
+      var filterByName = self.locationList()[i].name.toLowerCase().indexOf(filteredName.toLowerCase()) >= 0;
+
+      //console.log(filterByTypeRestaurant);
+      if (filterByName && (filterByTypeBar || filterByTypeClub || filterByTypeRestaurant) ) {
         if (self.locationList()[i].isVisible() === false) {
           self.locationList()[i].marker.setMap(self.googleMap);
           self.locationList()[i].isVisible(true);
@@ -226,7 +285,12 @@ var ViewModel = function(map) {
   }
 
   //Runs the search function everytime the query value changes
-  this.queryValue.subscribe(this.search);
+  this.queryValue.subscribe(this.filter);
+  this.barShow.subscribe(this.filter);
+  this.clubShow.subscribe(this.filter);
+  this.restaurantShow.subscribe(this.filter);
+
+
 
 }
 
