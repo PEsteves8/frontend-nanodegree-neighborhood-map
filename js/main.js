@@ -33,12 +33,12 @@ var locations = [{
 
 // Constructor to build each location's object
 var Location = function(data) {
-  this.name = ko.observable(data.name);
-  this.lat = ko.observable(data.lat);
-  this.lng = ko.observable(data.lng);
+  this.name = data.name;
+  this.lat = data.lat;
+  this.lng = data.lng;
   this.isVisible = ko.observable(true);
   this.infoOpen = ko.observable(false);
-  this.infoContent = ko.observable("<img src='images/loading_icon.gif'></img>");
+  this.infoContent = "<img src='images/loading_icon.gif'></img>";
 };
 
 var ViewModel = function(map) {
@@ -51,7 +51,7 @@ var ViewModel = function(map) {
   }
   else {
     this.listIsHidden = ko.observable(true);
-  
+
   }
   //Add funcionality to toogle the list's visibility
 
@@ -68,29 +68,29 @@ var ViewModel = function(map) {
     self.locationList.push(new Location(loc));
   });
   self.locationList.sort(function(l, r) {
-    return l.name() > r.name() ? 1 : -1
+    return l.name > r.name ? 1 : -1
   });
 
   //Add a marker property to each location in locationList
   self.locationList().forEach(function(location) {
     location.marker = new google.maps.Marker({
       position: {
-        lat: location.lat(),
-        lng: location.lng()
+        lat: location.lat,
+        lng: location.lng
       },
       map: self.googleMap,
-      title: location.name()
+      title: location.name
     });
     //Create an infoWindow for each marker
 
     //this.queryValue.subscribe(this.search);
     var infoWindow = new google.maps.InfoWindow({
-      content: location.infoContent(),
+      content: location.infoContent,
     });
 
-    location.infoContent.subscribe(function() {
-      infoWindow.setContent(location.infoContent());
-    });
+
+
+
     // Get the infoWindow html ready depending on wether the data from foursquare exists
     var getWindowHTML = function(icon, name, photo, hours, schedule, rating, url, phone, street, city, country) {
 
@@ -120,9 +120,9 @@ var ViewModel = function(map) {
 
           //Request info from foursquare for the clicked location only if data doesn't exist yet (loading icon playing)
           //A nested ajax request was necessary as the first returns the basic venue info including its ID and the second returns its details using the ID
-          if (location.infoContent() === "<img src='images/loading_icon.gif'></img>") {
+          if (location.infoContent === "<img src='images/loading_icon.gif'></img>") {
             $.ajax({
-              url: "https://api.foursquare.com/v2/venues/search?client_id=CHNBXXBO4XIC24AAH3JY3ZI4A1G0WBM24U3SEVDIKAFWKFDR&client_secret=FKC5XJA0JJVKFCQNEDABMH1GWSVPOES2GE0PVEVIQK4XK43X&v=20130815&limit=1&ll=" + location.lat() + "," + location.lng() + "&query=" + location.name(),
+              url: "https://api.foursquare.com/v2/venues/search?client_id=CHNBXXBO4XIC24AAH3JY3ZI4A1G0WBM24U3SEVDIKAFWKFDR&client_secret=FKC5XJA0JJVKFCQNEDABMH1GWSVPOES2GE0PVEVIQK4XK43X&v=20130815&limit=1&ll=" + location.lat + "," + location.lng + "&query=" + location.name,
               cache: true,
               dataType: 'json',
               success: function(searchResult) {
@@ -177,7 +177,8 @@ var ViewModel = function(map) {
                       venueCountry = venueData.response.venue.location.formattedAddress[2];
                     }
 
-                    location.infoContent(getWindowHTML(venueIcon, venueName, venuePhoto, venueHours, venueSchedule, venueRating, venueUrl, venuePhone, venueStreet, venueCity, venueCountry));
+                    location.infoContent = getWindowHTML(venueIcon, venueName, venuePhoto, venueHours, venueSchedule, venueRating, venueUrl, venuePhone, venueStreet, venueCity, venueCountry);
+                    infoWindow.setContent(location.infoContent);
                   },
                   error: function() {
                     location.infoContent("<h2>" + location.name() + "</h2>" + "<h3>Unable to retrieve info from Foursquare.</h3>");
