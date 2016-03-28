@@ -1,4 +1,4 @@
-// TODO: refactor css ||| add more places ||| add foursquare info
+// TODO: add more places ||| add foursquare info
 
 //List of locations
 var locations = [{
@@ -69,7 +69,7 @@ $('.hasTooltip').each(function() { // Notice the .each() loop, discussed below
     });
 });
 
-
+var loadingIcon = "<img src='images/loading_icon.gif'></img>";
 
 
 
@@ -81,7 +81,7 @@ var Location = function(data) {
   this.lng = data.lng;
   this.isVisible = ko.observable(true);
   this.infoOpen = ko.observable(false);
-  this.infoContent = "<img src='images/loading_icon.gif'></img>";
+  this.infoContent = loadingIcon;
   this.type = data.type;
 };
 
@@ -100,7 +100,7 @@ var ViewModel = function(map) {
   //Add funcionality to toogle the list's visibility
 
     this.toggleListVisible = function() {
-    $(".collapsableList").animate(
+    $(".collapsable-list").animate(
       {height: "toggle"}, 200);
     self.listIsHidden(!self.listIsHidden());
   }
@@ -117,6 +117,7 @@ var ViewModel = function(map) {
 
   //Add a marker property to each location in locationList
   self.locationList().forEach(function(location) {
+
     location.marker = new google.maps.Marker({
       position: {
         lat: location.lat,
@@ -134,21 +135,6 @@ var ViewModel = function(map) {
 
 
 
-
-    // Get the infoWindow html ready depending on wether the data from foursquare exists
-    var getWindowHTML = function(icon, name, photo, hours, schedule, rating, url, phone, street, city, country) {
-
-      var iconHTML = icon ? "<img width='25' class='iconHTML' src='" + icon + "'></img>" : "";
-      var nameHTML = name ? "<h3 class='nameHTML'>" + name + "</h3>" : "";
-      var photoHTML = photo ? "<img class='photoHTML' src='" + photo + "'>" : "";
-      var ratingHTML = rating ? "<h5 class='ratingHTML'>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + rating + "/10</a></h4>" : "<h4>Foursquare Rating: " + "<a href='" + url + "'target='_blank'>" + "-" + rating + "/10</a></h5>";
-      var hoursHTML = "<h5 class='hoursHTML'>" + (hours ? hours + "<br>" : "") + (schedule ? schedule + "<br>" : "") + "</h5>";
-      var addressPhoneHTML = "<p class='addressHTML'>" + (street ? street + "<br>" : "") + (city ? city + ", ": "") + (country ? country +"<br>" : "") + (phone ? phone : "") + "</p>";
-
-
-      return "<div style='display: flex;'>" + photoHTML + "<div>" + iconHTML + nameHTML + ratingHTML + addressPhoneHTML + hoursHTML + "</div>" + "</div>";
-    };
-
     location.toggleWindowOnClick = function() {
         //Toogle info window open (there are two conditions because on first click .getMap() doesn't return null yet)
         if (infoWindow.getMap() === null || typeof infoWindow.getMap() === "undefined") {
@@ -161,69 +147,79 @@ var ViewModel = function(map) {
           infoWindow.open(self.googleMap, location.marker);
           self.googleMap.panTo(location.marker.getPosition());
           location.infoOpen(true);
+          //Add event listener to run infowindow function on marker click
+        location.marker.addListener('click', location.toggleWindowOnClick);
+        //Add event listener to infoWindo close button so that the highlight in the locations list toggles
+        google.maps.event.addListener(infoWindow, 'closeclick', function() {
+          location.infoOpen(false);
+        })
 
           //Request info from foursquare for the clicked location only if data doesn't exist yet (loading icon playing)
           //A nested ajax request was necessary as the first returns the basic venue info including its ID and the second returns its details using the ID
-          if (location.infoContent === "<img src='images/loading_icon.gif'></img>") {
+          if (location.infoContent === loadingIcon) {
             $.ajax({
               url: "https://api.foursquare.com/v2/venues/search?client_id=CHNBXXBO4XIC24AAH3JY3ZI4A1G0WBM24U3SEVDIKAFWKFDR&client_secret=FKC5XJA0JJVKFCQNEDABMH1GWSVPOES2GE0PVEVIQK4XK43X&v=20130815&limit=1&ll=" + location.lat + "," + location.lng + "&query=" + location.name,
               cache: true,
               dataType: 'json',
               success: function(searchResult) {
-                $.ajax({
+               $.ajax({
                   url: "https://api.foursquare.com/v2/venues/" + searchResult.response.venues[0].id + "?client_id=CHNBXXBO4XIC24AAH3JY3ZI4A1G0WBM24U3SEVDIKAFWKFDR&client_secret=FKC5XJA0JJVKFCQNEDABMH1GWSVPOES2GE0PVEVIQK4XK43X&v=20130815",
                   cache: true,
                   dataType: 'json',
                   success: function(venueData) {
+                    console.log(venueData);
+                    var venue = {
+                      icon : "",
+                      name : "",
+                      photo : "",
+                      hours : "",
+                      schedule : "",
+                      rating : "",
+                      url : "",
+                      phone : "",
+                      street : "",
+                      city : "",
+                      country : ""
+                    };
 
-                    var venueIcon = "";
-                    var venueName = "";
-                    var venuePhoto = "";
-                    var venueHours = "";
-                    var venueSchedule = "";
-                    var venueRating = "";
-                    var venueUrl = "";
-                    var venuePhone = "";
-                    var venueStreet = "";
-                    var venueCity = "";
-                    var venueCountry = "";
                     //test each property to avoid unexisting properties
                     if (venueData.response.venue.categories[0].icon.prefix) {
-                      venueIcon = venueData.response.venue.categories[0].icon.prefix + "bg_32" + venueData.response.venue.categories[0].icon.suffix;
+                      venue.icon = venueData.response.venue.categories[0].icon.prefix + "bg_32" + venueData.response.venue.categories[0].icon.suffix;
                     }
                     if (venueData.response.venue.name) {
-                      venueName = venueData.response.venue.name;
+                      venue.name = venueData.response.venue.name;
                     }
                     if (venueData.response.venue.bestPhoto) {
-                      venuePhoto = venueData.response.venue.bestPhoto.prefix + "300x200" + venueData.response.venue.bestPhoto.suffix;
+                      venue.photo = venueData.response.venue.bestPhoto.prefix + "300x200" + venueData.response.venue.bestPhoto.suffix;
                     }
                     if (venueData.response.venue.hours) {
-                      venueHours = venueData.response.venue.hours.status;
+                      venue.hours = venueData.response.venue.hours.status;
                     }
                     if (venueData.response.venue.hours) {
-                      venueSchedule = venueData.response.venue.hours.timeframes[0].days + " - " + venueData.response.venue.hours.timeframes[0].open[0].renderedTime;
+                      venue.schedule = venueData.response.venue.hours.timeframes[0].days + " - " + venueData.response.venue.hours.timeframes[0].open[0].renderedTime;
                     }
                     if (venueData.response.venue.rating) {
-                      venueRating = venueData.response.venue.rating;
+                      venue.rating = venueData.response.venue.rating;
                     }
                     if (venueData.response.venue.canonicalUrl) {
-                      venueUrl = venueData.response.venue.canonicalUrl;
+                      venue.url = venueData.response.venue.canonicalUrl;
                     }
                     if (venueData.response.venue.contact.formattedPhone) {
-                      venuePhone = venueData.response.venue.contact.formattedPhone;
+                      venue.phone = venueData.response.venue.contact.formattedPhone;
                     }
                     if (venueData.response.venue.location.formattedAddress[0]) {
-                      venueStreet = venueData.response.venue.location.formattedAddress[0];
+                      venue.street = venueData.response.venue.location.formattedAddress[0];
                     }
                     if (venueData.response.venue.location.formattedAddress[1]) {
-                      venueCity = venueData.response.venue.location.formattedAddress[1];
+                      venue.city = venueData.response.venue.location.formattedAddress[1];
                     }
                     if (venueData.response.venue.location.formattedAddress[2]) {
-                      venueCountry = venueData.response.venue.location.formattedAddress[2];
+                      venue.country = venueData.response.venue.location.formattedAddress[2];
                     }
 
-                    location.infoContent = getWindowHTML(venueIcon, venueName, venuePhoto, venueHours, venueSchedule, venueRating, venueUrl, venuePhone, venueStreet, venueCity, venueCountry);
-                    infoWindow.setContent(location.infoContent);
+                    var iwtemplate = $('#infoWindowTpl').html();
+                    var iwHTML = Mustache.to_html(iwtemplate, venue);
+                    infoWindow.setContent(iwHTML);
                   },
                   error: function() {
                     location.infoContent("<h2>" + location.name() + "</h2>" + "<h3>Unable to retrieve info from Foursquare.</h3>");
@@ -241,13 +237,7 @@ var ViewModel = function(map) {
         }
 
       }
-      //Add event listener to run infowindow function on marker click
-    location.marker.addListener('click', location.toggleWindowOnClick);
-    //Add event listener to infoWindo close button so that the highlight in the locations list toggles
-    google.maps.event.addListener(infoWindow, 'closeclick', function() {
-      location.infoOpen(false);
-    })
-  });
+ });
 
   //Value for the search bar
   this.queryValue = ko.observable("");
@@ -308,7 +298,6 @@ function initMap() {
 
 // Apply bindings with the map
 $(window).load(function() {
-
   var googleMap = initMap();
   ko.applyBindings(new ViewModel(googleMap));
 });

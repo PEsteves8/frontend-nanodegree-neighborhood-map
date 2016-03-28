@@ -13,36 +13,37 @@
 <body>
   <div id="map"></div>
   <div class="icon info hasTooltip" title=""></div>
-  <div class="hidden infoTip"> <!-- This class should hide the element, change it if needed -->
-    <h2 class="center-text">Downtown Map</h2>
+  <div class="hidden infoTip">
+    <!-- This class should hide the element, change it if needed -->
+    <h2 class="text-center">Downtown Map</h2>
     <ul class="info-list">
-    <li>This is a curated set of great places to visit in case you're going out around Porto.</li>
-    <li>You can filter the selection by name or category using the buttons</li>
-    <li>Clicking on a list item or on a marker opens an infowindow about that location</li>
-  </ul>
+      <li>This is a curated set of great places to visit in case you're going out around Porto.</li>
+      <li>You can filter the selection by name or category using the buttons</li>
+      <li>Clicking on a list item or on a marker opens an infowindow about that location</li>
+    </ul>
   </div>
-  <div class="listMenu">
-    <button class="hideButton" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'">Loading...</button>
+  <div class="list-menu">
+    <button class="hide-button" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'">Loading...</button>
     <input type="search" class="search" placeholder="Filter by name..." data-bind="textInput: queryValue">
-    <ul class="filterList">
+    <ul class="filter-list">
       <li>
-        <input class="filterInput" id="bars" type="checkbox" data-bind="checked: barShow" checked>
-        <label class="filterLabel" for="bars">Bars</label>
+        <input class="filter-input" id="bars" type="checkbox" data-bind="checked: barShow" checked>
+        <label class="filter-label" for="bars">Bars</label>
       </li>
       <li>
-        <input class="filterInput" id="clubs" type="checkbox" data-bind="checked: clubShow" checked>
-        <label class="filterLabel" for="clubs">Clubs</label>
+        <input class="filter-input" id="clubs" type="checkbox" data-bind="checked: clubShow" checked>
+        <label class="filter-label" for="clubs">Clubs</label>
       </li>
       <li>
-        <input class="filterInput" id="restaurants" type="checkbox" data-bind="checked: restaurantShow" checked>
-        <label class="filterLabel" for="restaurants">Food</label>
+        <input class="filter-input" id="restaurants" type="checkbox" data-bind="checked: restaurantShow" checked>
+        <label class="filter-label text-center" for="restaurants">Food</label>
       </li>
     </ul>
-    <div class="collapsableList">
-      <h4 class="keyLocationsTitle">Key Venues</h4>
-      <ul class="locationsList" data-bind="foreach: locationList">
+    <div class="collapsable-list">
+      <h4 class="key-locations-title text-center">Key Venues</h4>
+      <ul class="locations-list" data-bind="foreach: locationList">
         <!-- ko if: isVisible -->
-        <li class="locationItem" data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
+        <li class="location-item" data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
           <strong data-bind="text: name"></strong>
         </li>
         <!-- /ko -->
@@ -50,9 +51,30 @@
     </div>
   </div>
 
+  <!-- Infowindow Template -->
+  <script id="infoWindowTpl" type="text/template">
+
+    <div class="locInfoWindow">
+      <div>
+        <img width="25" class="iconHTML" src="{{icon}}"></img>
+        <h3 class="nameHTML"> {{name}} </h3>
+        <img class="photoHTML" src="{{photo}}"></img>
+        <h5 class="ratingHTML">Foursquare Rating:<a href="{{url}}" target='_blank'> {{rating}}/10</a></h5>
+        <p class="hoursHTML">{{hours}}</p>
+        <p class="hoursHTML">{{schedule}}</p>
+        <p class='addressHTML'>{{street}}
+          <p>
+            <p class="addressHTML">{{city}}</p>
+            <p>{{country}}</p>
+            <p class="addressHTML">{{phone}}</p>
+      </div>
+    </div>
+  </script>
+
 
   <script src="js/jquery/jquery.js"></script>
   <script src="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
   <script src="js/knockout/knockout.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcaBHvN8Sga4DsQd0L0ynB-jxO7Fi1l8A" async defer></script>
   <script src="js/main.js"></script>
