@@ -1,0 +1,22 @@
+{
+  "name": "fend-nmap",
+  "version": "1.0.0",
+  "description": "neighborhood map fend project",
+  "main": "",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[1;2D\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[D\u001b[D"
+  },
+  "author": "",
+  "license": "ISC"
+}
