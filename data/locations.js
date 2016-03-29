@@ -35,7 +35,7 @@ var locations = [{
   lng: -8.612727,
   type: ["Bar"]
 }, {
-  name: "Taskinha do Alexr",
+  name: "Taskinha do Alex",
   lat: 41.151329,
   lng: -8.613903,
   type: ["Bar", "Restaurant"]
