@@ -15,13 +15,13 @@ html, body {
   text-align: center;
 }
 
-.info-list {
-  list-style-position: inside;
-  padding-left: 0;
+.highlighted {
+  background-color: lightgreen;
 }
 
-.info-list li {
-  margin-bottom: 5px;
+.clear-pad {
+  padding: 0;
+  margin: 0;
 }
 
 .hide-button {
@@ -69,12 +69,12 @@ html, body {
   width: 100%;
   background: rgba(255, 255, 255, 1);
 }
-.list-menu {
+.ui-section {
   position: absolute;
-  right: 10px;
-  top: 5px;
+  right: 20px;
+  top: 15px;
   overflow: hidden;
-  width: 200px;
+  width: 250px;
   padding-right: 5px;
 }
 .locations-list, .filter-list {
@@ -82,12 +82,22 @@ html, body {
   padding: 0;
   margin: 0;
 }
+
+.locations-list {
+  border: 3px solid #547c42;
+  height: 75vh;
+  max-height: 70vh;
+  overflow-y: scroll;
+  background-color: rgba(144, 144, 144, 0.4)
+}
+
+
 .location-item {
   font-family: sans-serif;
   background-color: #e0fdff;
   line-height: 25px;
   border-bottom: 1px solid #cccccc;
-  padding-left: 10px;
+  padding: 5px 0px 5px 10px;
   cursor: pointer;
 }
 .location-item:hover {
@@ -101,56 +111,67 @@ html, body {
 display: flex;
 max-width: 300px;
 max-height: 300px;
+padding-right: 15px;
 }
 
-.infoOpenHL {
-  background-color: lightgreen;
+.iw-name {
+  float: left;
+
+}
+.iw-icon {
+  float: left;
+  margin-left: 10px;
+  margin-top: 15px;
+  margin-right: 10px;
+}
+.iw-photo {
+  width: 100%;
 }
 
-.iconHTML {
-  float: right;
-  display: inline-block;
-  margin-right: 20px;
-  height: 25px;
-}
-.photoHTML {
-  position: relative;
-  margin: auto;
-  padding-right: 10px;
-  height: 75px;
-  width: 100px;
-}
-.ratingHTML {
-  margin: 8px 5px 5px 2px,
+.iw-contacts {
+display: inline-block;
+  width: 50%;
 }
 
-.nameHTML, .hoursHTML {
-  padding-right: 0px;
-  margin: 2px;
+.iw-hours {
+  float: left;
+  width: 50%;
 }
 
-.addressHTML {
-  margin: 0;
+.iw-comments-section {
+  clear: both;
+  padding-top: 10px;
 }
+
+
 
 /* Locations List */
 .key-locations-title {
   position: relative;
   top: 5px;
-  margin-top: 0px;
+  margin: 0 auto;
   font-family: sans-serif;
   color: white;
-  background-color: #1a484b;
+  background-color: #547c42;
   padding: 5px 0;
+  background: -moz-linear-gradient(top, #588b41 5%, #65964f 100%);
+  background: -webkit-linear-gradient(top, #588b41 5%, #65964f 100%);
+  background: -o-linear-gradient(top, #588b41 5%, #65964f 100%);
+  background: -ms-linear-gradient(top, #588b41 5%, #65964f 100%);
+  background: linear-gradient(to bottom, #588b41 5%, #65964f 100%);
 }
 
 .filter-list li {
-  display: inline;
+  display: inline-block;
+  margin: 0 auto;
+
+
 }
 .filter-list {
-  margin: 5px 0;
-  padding-left: 8px;
+  margin: 2px auto;
+  text-align: center;
 }
+
 .filter-input {
   position: absolute;
   left: -9999px;
@@ -179,10 +200,21 @@ max-height: 300px;
   background-color: #20c862;
   color: #fff;
 }
+
+/* App information tooltip */
+.info-list {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.info-list li {
+  margin-bottom: 5px;
+}
+
 .icon.info {
   position: absolute;
-  right: 220px;
-  margin-top: 10px;
+  margin-top: 20px;
+  right: 285px;
   display: inline-block;
   top: 0.15em;
   width: 1em;
@@ -218,8 +250,34 @@ max-height: 300px;
   margin-left: 5px;
 }
 
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+::-webkit-scrollbar-track {
+  background-color: #909090;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
 @media screen and (max-width: 750px) {
-  .collapsable-list {
+  .collapsable {
     display: none;
+  }
+
+  .iw-contacts {
+    float: none;
+    width: 100%;
+  }
+
+  .iw-hours {
+    float: none;
+    width: 100%;
   }
 }

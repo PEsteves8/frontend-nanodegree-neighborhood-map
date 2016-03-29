@@ -100,7 +100,7 @@ var ViewModel = function(map) {
   //Add funcionality to toogle the list's visibility
 
     this.toggleListVisible = function() {
-    $(".collapsable-list").animate(
+    $(".collapsable").animate(
       {height: "toggle"}, 200);
     self.listIsHidden(!self.listIsHidden());
   }
@@ -134,7 +134,6 @@ var ViewModel = function(map) {
     });
 
 
-
     location.toggleWindowOnClick = function() {
         //Toogle info window open (there are two conditions because on first click .getMap() doesn't return null yet)
         if (infoWindow.getMap() === null || typeof infoWindow.getMap() === "undefined") {
@@ -147,12 +146,8 @@ var ViewModel = function(map) {
           infoWindow.open(self.googleMap, location.marker);
           self.googleMap.panTo(location.marker.getPosition());
           location.infoOpen(true);
-          //Add event listener to run infowindow function on marker click
-        location.marker.addListener('click', location.toggleWindowOnClick);
-        //Add event listener to infoWindo close button so that the highlight in the locations list toggles
-        google.maps.event.addListener(infoWindow, 'closeclick', function() {
-          location.infoOpen(false);
-        })
+
+
 
           //Request info from foursquare for the clicked location only if data doesn't exist yet (loading icon playing)
           //A nested ajax request was necessary as the first returns the basic venue info including its ID and the second returns its details using the ID
@@ -175,6 +170,7 @@ var ViewModel = function(map) {
                       hours : "",
                       schedule : "",
                       rating : "",
+                      comments : [],
                       url : "",
                       phone : "",
                       street : "",
@@ -201,6 +197,13 @@ var ViewModel = function(map) {
                     if (venueData.response.venue.rating) {
                       venue.rating = venueData.response.venue.rating;
                     }
+
+                    if (venueData.response.venue.phrases) {
+                      venueData.response.venue.phrases.forEach(function(phrasesData) {
+                        venue.comments.push(phrasesData.sample.text);
+                      });
+                    }
+
                     if (venueData.response.venue.canonicalUrl) {
                       venue.url = venueData.response.venue.canonicalUrl;
                     }
@@ -213,7 +216,7 @@ var ViewModel = function(map) {
                     if (venueData.response.venue.location.formattedAddress[1]) {
                       venue.city = venueData.response.venue.location.formattedAddress[1];
                     }
-                    if (venueData.response.venue.location.formattedAddress[2]) {
+                   if (venueData.response.venue.location.formattedAddress[2]) {
                       venue.country = venueData.response.venue.location.formattedAddress[2];
                     }
 
@@ -237,6 +240,14 @@ var ViewModel = function(map) {
         }
 
       }
+
+
+          //Add event listener to run infowindow function on marker click
+        location.marker.addListener('click', location.toggleWindowOnClick);
+        //Add event listener to infoWindo close button so that the highlight in the locations list toggles
+        google.maps.event.addListener(infoWindow, 'closeclick', function() {
+          location.infoOpen(false);
+      });
  });
 
   //Value for the search bar
@@ -290,6 +301,7 @@ var ViewModel = function(map) {
 function initMap() {
   return new google.maps.Map(document.getElementById('map'), {
     center: new google.maps.LatLng(41.147273, -8.614370),
+    mapTypeControl: false,
     zoom: 17,
     scrollwheel: true
   })

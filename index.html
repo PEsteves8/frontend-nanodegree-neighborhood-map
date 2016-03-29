@@ -15,14 +15,15 @@
   <div class="icon info hasTooltip" title=""></div>
   <div class="hidden infoTip">
     <!-- This class should hide the element, change it if needed -->
-    <h2 class="text-center">Downtown Map</h2>
+    <h2 class="text-center">Bars and Clubs | Porto</h2>
     <ul class="info-list">
       <li>This is a curated set of great places to visit in case you're going out around Porto.</li>
       <li>You can filter the selection by name or category using the buttons</li>
       <li>Clicking on a list item or on a marker opens an infowindow about that location</li>
     </ul>
   </div>
-  <div class="list-menu">
+  <div class="ui-section">
+
     <button class="hide-button" type="button" data-bind="click: toggleListVisible, text: listIsHidden() ? 'Show List' : 'Hide List'">Loading...</button>
     <input type="search" class="search" placeholder="Filter by name..." data-bind="textInput: queryValue">
     <ul class="filter-list">
@@ -39,11 +40,11 @@
         <label class="filter-label text-center" for="restaurants">Food</label>
       </li>
     </ul>
-    <div class="collapsable-list">
+    <div class="collapsable">
       <h4 class="key-locations-title text-center">Key Venues</h4>
       <ul class="locations-list" data-bind="foreach: locationList">
         <!-- ko if: isVisible -->
-        <li class="location-item" data-bind="click: toggleWindowOnClick, css: { infoOpenHL: infoOpen}">
+        <li class="location-item" data-bind="click: toggleWindowOnClick, css: { highlighted: infoOpen}">
           <strong data-bind="text: name"></strong>
         </li>
         <!-- /ko -->
@@ -56,17 +57,35 @@
 
     <div class="locInfoWindow">
       <div>
-        <img width="25" class="iconHTML" src="{{icon}}"></img>
-        <h3 class="nameHTML"> {{name}} </h3>
-        <img class="photoHTML" src="{{photo}}"></img>
-        <h5 class="ratingHTML">Foursquare Rating:<a href="{{url}}" target='_blank'> {{rating}}/10</a></h5>
-        <p class="hoursHTML">{{hours}}</p>
-        <p class="hoursHTML">{{schedule}}</p>
-        <p class='addressHTML'>{{street}}
-          <p>
-            <p class="addressHTML">{{city}}</p>
-            <p>{{country}}</p>
-            <p class="addressHTML">{{phone}}</p>
+        <div>
+          <img width="25" class="iw-icon" src="{{icon}}"></img>
+          <h2 class="iw-name"> {{name}} </h2> {{#photo}}
+          <img class="iw-photo" src="{{photo}}"></img>
+          {{/photo}}
+        </div>
+        <h5 class="iw-rating">Foursquare Rating:<a href="{{url}}" target='_blank'> {{rating}}/10</a></h5>
+        <div class="container">
+          <div class="iw-hours">
+            <p class="clear-pad">{{hours}}</p>
+            <p class="clear-pad">{{schedule}}</p>
+          </div>
+          <div class="iw-contacts clear-pad">
+            <p class="clear-pad">{{street}}<p>
+                <p class="clear-pad">{{city}}</p>
+                <p class="clear-pad">{{country}}</p>
+                <p class="clear-pad">{{phone}}</p>
+          </div>
+        </div>
+        <div class="iw-comments-section">
+          {{#comments.length}}
+          <h4>Popular comments:</h4>
+          </div>
+          {{#comments}}
+          <p class="">"{{.}}"</p>
+          {{/comments}}</div>
+          {{/comments.length}}
+
+
       </div>
     </div>
   </script>
