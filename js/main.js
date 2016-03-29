@@ -287,7 +287,7 @@ function initMap() {
     scrollwheel: true
   })
 
-};
+}
 
 // Apply bindings with the map
 $(window).load(function() {
