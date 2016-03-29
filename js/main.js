@@ -1,43 +1,29 @@
-// TODO: add more places ||| add foursquare info
+// The locations data is in a separate file in "data/locations.js"
 
-//List of locations
-var locations = [{
-  name: "Café Piolho",
-  lat: 41.146882,
-  lng: -8.616246,
-  type: ["Bar", "Restaurant"]
-}, {
-  name: "Galerias de Paris",
-  lat: 41.147219,
-  lng: -8.614290,
-  type: ["Bar"]
-}, {
-  name: "We Love Porto",
-  lat: 41.147304,
-  lng: -8.614215,
-  type: ["Club"]
-}, {
-  name: "Plano B",
-  lat: 41.146512,
-  lng: -8.613855,
-  type: ["Club"]
-}, {
-  name: "Tendinha dos Clérigos",
-  lat: 41.147454,
-  lng: -8.613222,
-  type: ["Club"]
-}, {
-  name: "Espaço 77",
-  lat: 41.149607,
-  lng: -8.615973,
-  type: ["Bar", "Restaurant"]
-}, {
-  name: "Radio Bar",
-  lat: 41.148473,
-  lng: -8.612727,
-  type: ["Bar", "Club"]
-}, ];
+// Simple solution for normalizing accents when using the filter
+String.prototype.removeAccents = function(){
+    var t = this,
+    a = {
+        '[ÀÁÂÃÄÅĀĂǍẠẢẤẦẨẪẬẮẰẲẴẶǺĄ]' : 'A',
+        '[àáâãäåāăǎạảấầẩẫậắằẳẵặǻą]' : 'a',
+        '[ÇĆĈĊČ]' : 'C',
+        '[çćĉċč]' : 'c',
+        '[ÈÉÊËĒĔĖĘĚẸẺẼẾỀỂỄỆ]' : 'E',
+        '[èéêëēĕėęěẹẻẽếềểễệ]' : 'e',
+        '[ÌÍÎÏĨĪĬĮİǏỈỊ]' : 'I',
+        '[ìíîïĩīĭįıǐỉị]' : 'i',
+        '[ÒÓÔÕÖØŌŎŐƠǑǾỌỎỐỒỔỖỘỚỜỞỠỢ]' : 'O',
+        '[òóôõöøōŏőơǒǿọỏốồổỗộớờởỡợð]' : 'o',
+        '[ÙÚÛÜŨŪŬŮŰŲƯǓǕǗǙǛỤỦỨỪỬỮỰ]' : 'U',
+        '[ùúûüũūŭůűųưǔǖǘǚǜụủứừửữự]' : 'u',
+    };
+    for(var i in a){
+        t = t.replace(new RegExp(i, "g"), a[i]);
+    }
+    return t;
+};
 
+// Code for the tooltip creation using the qTip2 library
 $('.hasTooltip').each(function() { // Notice the .each() loop, discussed below
     $(this).qtip({
         content: {
@@ -69,10 +55,8 @@ $('.hasTooltip').each(function() { // Notice the .each() loop, discussed below
     });
 });
 
-var loadingIcon = "<img src='images/loading_icon.gif'></img>";
-
-
-
+// The loading icon to be used while waiting for the AJAX requests
+var loadingIcon =  "<div class='uil-ring-css' style='transform:scale(0.41);'><div>";
 
 // Constructor to build each location's object
 var Location = function(data) {
@@ -148,7 +132,6 @@ var ViewModel = function(map) {
           location.infoOpen(true);
 
 
-
           //Request info from foursquare for the clicked location only if data doesn't exist yet (loading icon playing)
           //A nested ajax request was necessary as the first returns the basic venue info including its ID and the second returns its details using the ID
           if (location.infoContent === loadingIcon) {
@@ -162,7 +145,6 @@ var ViewModel = function(map) {
                   cache: true,
                   dataType: 'json',
                   success: function(venueData) {
-                    console.log(venueData);
                     var venue = {
                       icon : "",
                       name : "",
@@ -269,9 +251,8 @@ var ViewModel = function(map) {
       var filterByTypeBar = self.locationList()[i].type.indexOf("Bar") >= 0 && self.barShow();
       var filterByTypeClub = self.locationList()[i].type.indexOf("Club") >= 0 && self.clubShow();
       var filterByTypeRestaurant = self.locationList()[i].type.indexOf("Restaurant") >= 0 && self.restaurantShow();
-      var filterByName = self.locationList()[i].name.toLowerCase().indexOf(filteredName.toLowerCase()) >= 0;
+      var filterByName = self.locationList()[i].name.toLowerCase().removeAccents().indexOf(filteredName.toLowerCase()) >= 0;
 
-      //console.log(filterByTypeRestaurant);
       if (filterByName && (filterByTypeBar || filterByTypeClub || filterByTypeRestaurant) ) {
         if (self.locationList()[i].isVisible() === false) {
           self.locationList()[i].marker.setMap(self.googleMap);
