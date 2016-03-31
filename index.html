@@ -46,7 +46,7 @@
       <ul class="locations-list" data-bind="foreach: locationList">
         <!-- ko if: isVisible -->
         <li class="location-item" data-bind="click: toggleWindowOnClick, css: { highlighted: infoOpen}">
-          <strong data-bind="text: name"></strong>
+          <span data-bind="text: name"></span>
         </li>
         <!-- /ko -->
       </ul>

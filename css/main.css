@@ -94,7 +94,7 @@ html, body {
 
 .location-item {
   font-family: sans-serif;
-  background-color: #e0fdff;
+  background-color: #ffffff;
   line-height: 25px;
   border-bottom: 1px solid #cccccc;
   padding: 5px 0px 5px 10px;
@@ -163,10 +163,9 @@ display: inline-block;
 
 .filter-list li {
   display: inline-block;
-  margin: 0 auto;
-
-
+  margin: 5px 10px;
 }
+
 .filter-list {
   margin: 2px auto;
   text-align: center;
@@ -197,7 +196,7 @@ display: inline-block;
   box-shadow: 0 0 10px rgba(0, 0, 0, .6);
 }
 .filter-input:checked + label {
-  background-color: #20c862;
+  background-color: #22ab58;
   color: #fff;
 }
 
