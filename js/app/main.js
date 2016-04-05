@@ -1,9 +1,8 @@
 // The locations data is in a separate file in "data/locations.js"
 
-// Simple solution for normalizing accents when using the filter
-String.prototype.removeAccents = function(){
-    var t = this,
-    a = {
+// Simple solution for normalizing accents when filtering using the search box
+var removeAccents = function(string) {
+    var equivalent_pairs = {
         '[ÀÁÂÃÄÅĀĂǍẠẢẤẦẨẪẬẮẰẲẴẶǺĄ]' : 'A',
         '[àáâãäåāăǎạảấầẩẫậắằẳẵặǻą]' : 'a',
         '[ÇĆĈĊČ]' : 'C',
@@ -17,8 +16,8 @@ String.prototype.removeAccents = function(){
         '[ÙÚÛÜŨŪŬŮŰŲƯǓǕǗǙǛỤỦỨỪỬỮỰ]' : 'U',
         '[ùúûüũūŭůűųưǔǖǘǚǜụủứừửữự]' : 'u',
     };
-    for(var i in a){
-        t = t.replace(new RegExp(i, "g"), a[i]);
+    for(var i in equivalent_pairs) {
+        string = string.replace(new RegExp(i, "g"), a[i]);
     }
     return t;
 };
@@ -251,7 +250,7 @@ var ViewModel = function(map) {
       var filterByTypeBar = self.locationList()[i].type.indexOf("Bar") >= 0 && self.barShow();
       var filterByTypeClub = self.locationList()[i].type.indexOf("Club") >= 0 && self.clubShow();
       var filterByTypeRestaurant = self.locationList()[i].type.indexOf("Restaurant") >= 0 && self.restaurantShow();
-      var filterByName = self.locationList()[i].name.toLowerCase().removeAccents().indexOf(filteredName.toLowerCase()) >= 0;
+      var filterByName = removeAccents(self.locationList()[i].name.toLowerCase()).indexOf(filteredName.toLowerCase()) >= 0;
 
       if (filterByName && (filterByTypeBar || filterByTypeClub || filterByTypeRestaurant) ) {
         if (self.locationList()[i].isVisible() === false) {
